@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.resolve.checkers
 
+import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.diagnostics.Errors
 import org.jetbrains.kotlin.psi.*
@@ -16,7 +17,7 @@ class FunInterfaceDeclarationChecker : DeclarationChecker {
         if (declaration !is KtClass) return
         if (descriptor !is ClassDescriptor || !descriptor.isFun) return
 
-        val funKeyword = declaration.getFunKeyword() ?: declaration.getClassKeyword() ?: return
+        val funKeyword = declaration.getFunKeyword() ?: return
 
         val abstractMembers = getAbstractMembers(descriptor)
         for (abstractMember in abstractMembers) {
@@ -34,27 +35,24 @@ class FunInterfaceDeclarationChecker : DeclarationChecker {
             if (!reportOnProperty) return // It's enough to report only once if abstract properties are in the base class
         }
 
-        val abstractMember = abstractMembers.singleOrNull()
+        val abstractMember = abstractMembers.filterIsInstance<FunctionDescriptor>().singleOrNull()
 
         if (abstractMember == null) {
             context.trace.report(Errors.FUN_INTERFACE_WRONG_COUNT_OF_ABSTRACT_MEMBERS.on(funKeyword))
             return
         }
 
-        if (abstractMember !is FunctionDescriptor) return // abstract properties were checked earlier
-
-        checkSingleAbstractMember(abstractMember, declaration, context)
+        checkSingleAbstractMember(abstractMember, funKeyword, context)
     }
 
     private fun checkSingleAbstractMember(
         abstractMember: FunctionDescriptor,
-        ktFunInterface: KtClass,
+        funInterfaceKeyword: PsiElement,
         context: DeclarationCheckerContext,
     ) {
-        val funInterfaceKeyword = ktFunInterface.getFunKeyword()
         val ktFunction = abstractMember.source.getPsi() as? KtNamedFunction
         if (abstractMember.typeParameters.isNotEmpty()) {
-            val reportOn = ktFunction?.typeParameterList ?: ktFunction?.funKeyword ?: funInterfaceKeyword ?: return
+            val reportOn = ktFunction?.typeParameterList ?: ktFunction?.funKeyword ?: funInterfaceKeyword
             context.trace.report(Errors.FUN_INTERFACE_ABSTRACT_METHOD_WITH_TYPE_PARAMETERS.on(reportOn))
             return
         }

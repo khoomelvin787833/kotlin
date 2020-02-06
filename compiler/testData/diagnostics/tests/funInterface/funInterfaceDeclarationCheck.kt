@@ -23,18 +23,30 @@ interface BaseWithSAM {
     fun oneMore()
 }
 
+fun interface Foo4WithDefault : BaseWithSAM {
+    fun oneMore() {}
+}
+
+interface BaseWithDefault {
+    fun def() {}
+}
+
+fun interface Foo4WithBaseDefault : BaseWithDefault {
+    fun oneMore()
+}
+
 fun interface GoodWithBase : BaseWithSAM
 
-fun interface Foo5 {
+<!FUN_INTERFACE_WRONG_COUNT_OF_ABSTRACT_MEMBERS!>fun<!> interface Foo5 {
     <!FUN_INTERFACE_CANNOT_HAVE_ABSTRACT_PROPERTIES!>val<!> prop: Int
 }
 
-<!FUN_INTERFACE_WRONG_COUNT_OF_ABSTRACT_MEMBERS!>fun<!> interface Foo6 {
+fun interface Foo6 {
     fun foo()
     <!FUN_INTERFACE_CANNOT_HAVE_ABSTRACT_PROPERTIES!>val<!> prop: Int
 }
 
-<!FUN_INTERFACE_WRONG_COUNT_OF_ABSTRACT_MEMBERS!>fun<!> interface Foo7 : BaseWithSAM {
+fun interface Foo7 : BaseWithSAM {
     <!FUN_INTERFACE_CANNOT_HAVE_ABSTRACT_PROPERTIES!>val<!> prop: Int
 }
 
@@ -60,4 +72,12 @@ fun interface GoodExtensionGeneric : GoodGeneric<String>
 
 fun interface GoodSuspend {
     suspend fun invoke()
+}
+
+fun <T> local() {
+    fun interface LocalFun {
+        fun invoke(element: T)
+    }
+
+    fun take(l: LocalFun) {}
 }
