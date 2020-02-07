@@ -23,6 +23,18 @@ fun interface Foo4 : BaseWithSAM {
     fun oneMore()
 }
 
+fun interface Foo4WithDefault : BaseWithSAM {
+    fun oneMore() {}
+}
+
+interface BaseWithDefault {
+    fun def() {}
+}
+
+fun interface Foo4WithBaseDefault : BaseWithDefault {
+    fun oneMore()
+}
+
 fun interface GoodWithBase : BaseWithSAM
 
 fun interface Foo5 {
@@ -61,3 +73,22 @@ fun interface GoodExtensionGeneric : GoodGeneric<String>
 fun interface GoodSuspend {
     suspend fun invoke()
 }
+
+class WithNestedFun<K> {
+    fun interface NestedSimple
+
+    fun interface GoodFun {
+        fun invoke()
+    }
+
+    fun interface NestedFun {
+        fun inovke(element: K)
+    }
+}
+
+fun <T> local() {
+    fun interface LocalFun {
+        fun invoke(element: T)
+    }
+}
+

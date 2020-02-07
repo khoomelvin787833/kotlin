@@ -74,10 +74,20 @@ fun interface GoodSuspend {
     suspend fun invoke()
 }
 
-fun <T> local() {
-    fun interface LocalFun {
-        fun invoke(element: T)
+class WithNestedFun<K> {
+    <!FUN_INTERFACE_WRONG_COUNT_OF_ABSTRACT_MEMBERS!>fun<!> interface NestedSimple
+
+    fun interface GoodFun {
+        fun invoke()
     }
 
-    fun take(l: LocalFun) {}
+    fun interface NestedFun {
+        fun inovke(element: <!UNRESOLVED_REFERENCE!>K<!>)
+    }
+}
+
+fun <T> local() {
+    <!LOCAL_INTERFACE_NOT_ALLOWED!>fun interface LocalFun<!> {
+        fun invoke(element: T)
+    }
 }
