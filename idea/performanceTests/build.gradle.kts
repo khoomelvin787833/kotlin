@@ -17,6 +17,8 @@ dependencies {
     testRuntimeOnly(project(":allopen-ide-plugin"))
     testRuntimeOnly(project(":kotlin-scripting-idea"))
     testRuntimeOnly(project(":kotlinx-serialization-ide-plugin"))
+    testRuntimeOnly(project(":nj2k:nj2k-services"))
+    testRuntimeOnly(project(":kotlin-reflect"))
 
     testImplementation(project(":compiler:backend"))
     testImplementation(project(":idea:idea-jvm"))
@@ -31,13 +33,8 @@ dependencies {
         testRuntimeOnly(intellijPluginDep("java"))
     }
 
-    testRuntimeOnly(project(":kotlin-reflect"))
-
     testCompileOnly(intellijDep())
-
-    //
     testCompileOnly(project(":nj2k"))
-    testCompileOnly(project(":nj2k:nj2k-services"))
     testCompileOnly(project(":idea:idea-gradle-tooling-api"))
     testCompileOnly(intellijPluginDep("gradle"))
     testCompileOnly(intellijDep()) { includeJars("slf4j-api-1.7.25") }
