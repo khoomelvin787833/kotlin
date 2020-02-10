@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.registry.Registry
 import com.intellij.psi.impl.source.resolve.ResolveCache
 import org.jetbrains.annotations.TestOnly
+import org.jetbrains.kotlin.idea.references.AbstractKtReference
 
 /**
  * Temporary allow resolve in dispatch thread.
@@ -59,6 +60,10 @@ internal object ResolveInDispatchThreadManager {
 
     // Guarded by isDispatchThread check
     private var errorHandler: (() -> Unit)? = null
+
+    init {
+        AbstractKtReference.enableResolverCache = isForceCheckInTests
+    }
 
     internal fun assertNoResolveInDispatchThread() {
         val application = ApplicationManager.getApplication() ?: return
