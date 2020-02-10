@@ -1171,11 +1171,6 @@ public class FirDiagnosticsTestGenerated extends AbstractFirDiagnosticsTest {
             runTest("compiler/fir/resolve/testData/resolve/problems/samConversionInConstructorCall.kt");
         }
 
-        @TestMetadata("smartCastInInit.kt")
-        public void testSmartCastInInit() throws Exception {
-            runTest("compiler/fir/resolve/testData/resolve/problems/smartCastInInit.kt");
-        }
-
         @TestMetadata("syntheticsVsNormalProperties.kt")
         public void testSyntheticsVsNormalProperties() throws Exception {
             runTest("compiler/fir/resolve/testData/resolve/problems/syntheticsVsNormalProperties.kt");
